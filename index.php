@@ -91,8 +91,8 @@ if (($file = fopen(FILE_PATH, 'r')) !== false) {
         $response = $createdUsers[] = createUser($token->access_token, $fields);
         $r++;
         
-        if ($response->errorStatus == 'ERROR') {
-            error_log("User not created, error: " . $response->exceptionClass . ' data:'  . json_encode($fields), 3, __DIR__ . '/creation_error.log');
+        if (!empty($response->errorStatus)) {
+            error_log("User not created, error: " . $response->errorStatus . ' data:'  . json_encode($fields), 3, __DIR__ . '/creation_error.log');
         } else {
            error_log("User created correctly: " . json_encode($fields), 3, __DIR__ . '/creation_success.log');
         }
