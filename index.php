@@ -71,28 +71,24 @@ if (($file = fopen(FILE_PATH, 'r')) !== false) {
     $token = generateToken();
     $createdUsers = [];
     $r = 0;
-    $headers = [];
     $fields = [];
     while (($row = fgetcsv($file, 0, SEPARATOR)) !== false) {
-        if ($r === 0) {
-            $headers = $row;
-        } else {
-            $firtsName = $row[1];
-            $lastName = $row[2];
-            $loginName = $row[3];
-            $email = $row[4];
-            $groups = explode('|', $row[5]);
-            $password = $row[6];
-            $fields = [
-                'firstname' => $firtsName,
-                'lastname' => $lastName,
-                'loginName' => $loginName,
-                'email' => $email,
-                'groupIds' => $groups,
-                'password' => $password
-            ];
-            $createdUsers[] = createUser($token->access_token, $fields);
-        }
+        $firtsName = $row[1];
+        $lastName = $row[2];
+        $loginName = $row[3];
+        $email = $row[4];
+        $groups = explode('|', $row[5]);
+        $password = $row[6];
+        $fields = [
+            'firstname' => $firtsName,
+            'lastname' => $lastName,
+            'loginName' => $loginName,
+            'email' => $email,
+            'groupIds' => $groups,
+            'password' => $password,
+            'activo' => true
+        ];
+        $createdUsers[] = createUser($token->access_token, $fields);
         $r++;
     }
     fclose($file);
