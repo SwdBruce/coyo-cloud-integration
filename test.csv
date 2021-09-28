@@ -1,0 +1,3 @@
+﻿unique_identificator,first_name,last_name,login_name,email,groups,initial_dummy_password
+1,Joe,Doe,zDoe,1wxxjoe@example.cop,ddc95137-b531-4668-bd90-05e0a84bae4e,secretpass12
+2,Joe,Doe,zDoe,2wxxjoe@example.cop,ddc95137-b531-4668-bd90-05e0a84bae4e,secretpass12
