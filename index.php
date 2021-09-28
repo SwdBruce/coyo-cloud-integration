@@ -1,11 +1,11 @@
 <?php
 
-const FILE_PATH = '';
-const BASE_URL = '';
-const CLIENT_ID = '';
-const CLIENT_SECRET = '';
-const USERNAME = '';
-const PASSWORD = '';
+const FILE_PATH = 'test.csv';
+const BASE_URL = 'https://coro.coyocloud.com/';
+const CLIENT_ID = 'test';
+const CLIENT_SECRET = '98941a91-69ee-4ae0-9751-e87161daac82';
+const USERNAME = 'kontakt@co-ro.de';
+const PASSWORD = '000000';
 const SEPARATOR = ',';
 const GENERATE_TOKEN_ENDPOINT = BASE_URL . 'api/oauth/token?grant_type=password&username=' . USERNAME . '&password=' . PASSWORD;
 const CREATE_USER_ENDPOINT = BASE_URL . 'api/users';
@@ -86,7 +86,7 @@ if (($file = fopen(FILE_PATH, 'r')) !== false) {
             'email' => $email,
             'groupIds' => $groups,
             'password' => $password,
-            'activo' => true
+            'active' => true
         ];
         $response = $createdUsers[] = createUser($token->access_token, $fields);
         $r++;
