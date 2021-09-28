@@ -17,13 +17,13 @@ PASSWORD: `Coyo Account password`
 
 SEPARATOR: `Default csv file data separator`
 
-##ENDPOINTS
+## ENDPOINTS
 Generate Token: `api/oauth/token`
 
 Create Token: `api/users`
 
 
-##PHP Version
-7.0
+## Supported PHP Versions
+7.0+
 
 
