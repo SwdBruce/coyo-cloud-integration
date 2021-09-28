@@ -2,7 +2,7 @@
 
 Script to add users with csv file
 
-##Global Variables
+## Global Variables
 FILE_PATH: `Csv file path` 
 
 BASE_URL: `Base url or Coyo Domain`
