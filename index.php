@@ -1,16 +1,17 @@
 <?php
 
-const FILE_PATH = 'test.csv';
-const BASE_URL = 'https://coro.coyocloud.com/';
-const CLIENT_ID = 'test';
-const CLIENT_SECRET = '98941a91-69ee-4ae0-9751-e87161daac82';
-const USERNAME = 'kontakt@co-ro.de';
-const PASSWORD = '000000';
+const FILE_PATH = '';
+const BASE_URL = '';
+const CLIENT_ID = '';
+const CLIENT_SECRET = '';
+const USERNAME = '';
+const PASSWORD = '';
 const SEPARATOR = ',';
 const GENERATE_TOKEN_ENDPOINT = BASE_URL . 'api/oauth/token?grant_type=password&username=' . USERNAME . '&password=' . PASSWORD;
 const CREATE_USER_ENDPOINT = BASE_URL . 'api/users';
+const GET_GROUP_ENDPOINT = BASE_URL . 'api/groups';
 
-function callAPI(string $method, string $url, ?string $data = null, array $httpheader = null)
+function callAPI(string $method, string $url, $data = null, array $httpheader = null)
 {
     header("Content-Type:application/json");
     $curl = curl_init();
@@ -66,25 +67,50 @@ function createUser(string $accessToken, array $fields) : object
     return json_decode($jsonResponse);
 }
 
+function getGroupsByName(string $accessToken, string $groupName) {
+    $httpheader = ["Content-Type:application/json"];
+    $params = [
+        'access_token' => $accessToken,
+        'displayName' => $groupName
+    ];
+    $jsonResponse = callAPI('GET', GET_GROUP_ENDPOINT, $params, $httpheader);
+    $response = json_decode($jsonResponse);
+    $groupsId = [];
+    if ($response->empty === false) {
+        foreach ($response->content as $content) {
+            if ($content->displayName === $groupName) {
+                $groupsId[] = $content->id;
+            }
+        }
+    }
+
+    return $groupsId;
+}
+
 if (($file = fopen(FILE_PATH, 'r')) !== false) {
     header('Content-type: application/json');
-    $token = generateToken();
     $createdUsers = [];
     $r = 0;
     $fields = [];
     while (($row = fgetcsv($file, 0, SEPARATOR)) !== false) {
+        $token = generateToken();
+        $groupsName = explode('|', $row[5]);
+        $groupsId = [];
+        foreach ($groupsName as $groupName) {
+            $groupsId = getGroupsByName($token->access_token, $groupName);
+        }
+
         $firtsName = $row[1];
         $lastName = $row[2];
         $loginName = $row[3];
         $email = $row[4];
-        $groups = explode('|', $row[5]);
         $password = $row[6];
         $fields = [
             'firstname' => $firtsName,
             'lastname' => $lastName,
             'loginName' => $loginName,
             'email' => $email,
-            'groupIds' => $groups,
+            'groupIds' => $groupsId,
             'password' => $password,
             'active' => true
         ];
